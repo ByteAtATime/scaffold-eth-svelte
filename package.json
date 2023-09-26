@@ -1,0 +1,41 @@
+{
+  "name": "se-2",
+  "version": "0.0.1",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "packages/hardhat",
+      "packages/nextjs"
+    ]
+  },
+  "scripts": {
+    "preinstall": "npx only-allow pnpm",
+    "account": "pnpm -F @se-2/hardhat run account",
+    "chain": "pnpm -F @se-2/hardhat run chain",
+    "fork": "pnpm -F @se-2/hardhat run fork",
+    "deploy": "pnpm -F @se-2/hardhat run deploy",
+    "verify": "pnpm -F @se-2/hardhat run verify",
+    "compile": "pnpm -F @se-2/hardhat run compile",
+    "generate": "pnpm -F @se-2/hardhat run generate",
+    "hardhat:lint": "pnpm -F @se-2/hardhat run lint",
+    "hardhat:lint-staged": "pnpm -F @se-2/hardhat run lint-staged",
+    "hardhat:test": "pnpm -F @se-2/hardhat run test",
+    "start": "pnpm -F @se-2/nextjs run dev",
+    "next:lint": "pnpm -F @se-2/nextjs run lint",
+    "next:format": "pnpm -F @se-2/nextjs run format",
+    "next:check-types": "pnpm -F @se-2/nextjs run check-types",
+    "test": "pnpm -F @se-2/hardhat run test",
+    "postinstall": "husky install",
+    "precommit": "lint-staged",
+    "vercel": "pnpm -F @se-2/nextjs run vercel",
+    "vercel:yolo": "pnpm -F @se-2/nextjs run vercel:yolo"
+  },
+  "engines": {
+    "node": ">=16.14.0",
+    "pnpm": ">=8.7.1"
+  },
+  "devDependencies": {
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3"
+  }
+}
