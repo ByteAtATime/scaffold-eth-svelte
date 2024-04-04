@@ -109,10 +109,9 @@
           <span class="block text-xs font-extralight leading-none">wei</span>
         </div>
         <IntegerInput
-          value={txValue}
-          onchange={updatedTxValue => {
+          bind:value={txValue}
+          onchange={() => {
             displayedTxResult = undefined;
-            txValue = updatedTxValue;
           }}
           placeholder="value (wei)"
         />

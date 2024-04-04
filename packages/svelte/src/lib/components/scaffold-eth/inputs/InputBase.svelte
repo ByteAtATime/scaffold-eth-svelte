@@ -3,8 +3,8 @@
 
   import type { CommonInputProps } from "./utils";
 
-  const {
-    value,
+  let {
+    value = $bindable(),
     name,
     placeholder,
     onchange,
@@ -57,7 +57,7 @@
     bind:this={input}
     {placeholder}
     {name}
-    value={value?.toString()}
+    bind:value
     oninput={handleChange}
     {disabled}
     autocomplete="off"

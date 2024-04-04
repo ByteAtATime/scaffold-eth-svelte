@@ -2,8 +2,8 @@
   import InputBase from "./InputBase.svelte";
   import { IntegerVariant, type CommonInputProps, isValidInteger } from "./utils";
 
-  const {
-    value,
+  let {
+    value = $bindable(),
     onchange,
     name,
     placeholder,
@@ -28,13 +28,15 @@
   const multiplyBy1e18 = () => {
     if (!value) return;
     if (typeof value === "bigint") {
-      return onchange(value * 10n ** 18n);
+      value = value * 10n ** 18n;
+      return onchange(value);
     }
-    return onchange(BigInt(Math.round(Number(value) * 10 ** 18)));
+    value = BigInt(Math.round(Number(value) * 10 ** 18));
+    return onchange(value);
   };
 </script>
 
-<InputBase {name} {value} {placeholder} error={inputError} {onchange} {disabled}>
+<InputBase {name} bind:value {placeholder} error={inputError} {onchange} {disabled}>
   {#snippet suffix()}
     {#if !inputError && !disableMultiplyBy1e18}
       <div
