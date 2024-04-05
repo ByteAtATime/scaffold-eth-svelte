@@ -69,13 +69,13 @@ export const useScaffoldWriteContract = (writeContractParams?: CreateWriteContra
             ...wagmiVariables,
           } as WriteContractVariables<Abi, string, any[], Config, number>,
           mutateOptions as
-          | MutateOptions<
-            WriteContractReturnType,
-            WriteContractErrorType,
-            WriteContractVariables<Abi, string, any[], Config, number>,
-            unknown
-          >
-          | undefined,
+            | MutateOptions<
+                WriteContractReturnType,
+                WriteContractErrorType,
+                WriteContractVariables<Abi, string, any[], Config, number>,
+                unknown
+              >
+            | undefined,
         );
       const writeTxResult = await writeTx(makeWriteWithParams, { blockConfirmations, onBlockConfirmation });
 

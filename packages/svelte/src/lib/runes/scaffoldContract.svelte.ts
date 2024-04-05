@@ -3,7 +3,15 @@ import type { GetWalletClientReturnType } from "@wagmi/core";
 import { createDeployedContractInfo } from "./deployedContractInfo.svelte";
 import { createTargetNetwork } from "./targetNetwork.svelte";
 import { createPublicClient } from "@byteatatime/wagmi-svelte";
-import { type GetContractReturnType, getContract, type Account, type Address, type Chain, type Client, type Transport } from "viem";
+import {
+  type GetContractReturnType,
+  getContract,
+  type Account,
+  type Address,
+  type Chain,
+  type Client,
+  type Transport,
+} from "viem";
 
 /**
  * Gets a viem instance of the contract present in deployedContracts.ts or externalContracts.ts corresponding to
@@ -22,7 +30,9 @@ export const createScaffoldContract = <
   contractName: TContractName;
   walletClient?: TWalletClient | null;
 }) => {
-  const { data: deployedContractData, isLoading: deployedContractLoading } = $derived(createDeployedContractInfo(contractName));
+  const { data: deployedContractData, isLoading: deployedContractLoading } = $derived(
+    createDeployedContractInfo(contractName),
+  );
   const { targetNetwork } = $derived(createTargetNetwork());
   const { result: publicClient } = $derived(createPublicClient({ chainId: targetNetwork.id }));
 
@@ -34,11 +44,11 @@ export const createScaffoldContract = <
         Address,
         Contract<TContractName>["abi"],
         TWalletClient extends Exclude<GetWalletClientReturnType, null>
-        ? {
-          public: Client<Transport, Chain>;
-          wallet: TWalletClient;
-        }
-        : { public: Client<Transport, Chain> },
+          ? {
+              public: Client<Transport, Chain>;
+              wallet: TWalletClient;
+            }
+          : { public: Client<Transport, Chain> },
         Chain,
         Account
       >({
@@ -50,14 +60,14 @@ export const createScaffoldContract = <
         } as any,
       });
     }
-  })
+  });
 
   return {
     get data() {
-      return contract
+      return contract;
     },
     get isLoading() {
-      return deployedContractLoading
-    }
+      return deployedContractLoading;
+    },
   };
 };
