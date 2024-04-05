@@ -4,6 +4,8 @@
   import type { CommonInputProps } from "./utils";
 
   let {
+    // I have no idea why ESLint doesn't recognize $bindable
+    // eslint-disable-next-line no-undef
     value = $bindable(),
     name,
     placeholder,
@@ -13,6 +15,8 @@
     error,
     prefix,
     suffix,
+    // ESLint doesn't work well with generics
+    // eslint-disable-next-line no-undef
   }: CommonInputProps<T> & {
     error?: boolean;
     prefix?: Snippet;
@@ -33,6 +37,7 @@
 
   const handleChange = (e: Event) => {
     const target = e.target as HTMLInputElement;
+    // eslint-disable-next-line no-undef
     onchange(target.value as unknown as T);
   };
 

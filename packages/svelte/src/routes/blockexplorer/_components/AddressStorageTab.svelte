@@ -17,6 +17,8 @@
         const storageData = [];
         let idx = 0;
 
+        // We break out of this loop when we get an empty storage slot
+        // eslint-disable-next-line no-constant-condition
         while (true) {
           const storageAtPosition = await publicClient.getStorageAt({
             address: address,

@@ -15,7 +15,10 @@
   const { targetNetwork } = $derived(createTargetNetwork());
 
   const queryClient = useQueryClient();
+  // eslint-disable-next-line svelte/valid-compile
   const blockNumber = createBlockNumber({ watch: true, chainId: targetNetwork.id });
+  // We update this in the effect below
+  // eslint-disable-next-line svelte/valid-compile
   let balance = $state(createBalance({ address, chainId: targetNetwork.id }));
 
   $effect(() => {
@@ -25,10 +28,6 @@
     untrack(() => {
       queryClient.invalidateQueries({ queryKey: balance.result.queryKey });
     });
-  });
-
-  $effect(() => {
-    balance = createBalance({ address, chainId: targetNetwork.id });
   });
 
   $effect(() => {

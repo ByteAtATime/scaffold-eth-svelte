@@ -3,6 +3,7 @@
   import { getTargetNetworks } from "$lib/utils/scaffold-eth/networks";
   import { createAccount, createSwitchChain } from "@byteatatime/wagmi-svelte";
   import { ArrowsRightLeft, Icon } from "svelte-hero-icons";
+  import { createDarkMode } from "$lib/runes/darkMode.svelte";
 
   const { hidden = false } = $props();
 
@@ -12,8 +13,7 @@
   const account = createAccount();
   const items = allowedNetworks.filter(network => network.id !== account.result.chain?.id);
 
-  // TODO: implement theming
-  const isDarkMode = true;
+  const darkMode = createDarkMode();
 </script>
 
 {#each items as network (network.id)}
@@ -28,7 +28,7 @@
       <Icon src={ArrowsRightLeft} class="ml-2 h-6 w-4 sm:ml-0" />
       <span>
         Switch to
-        <span style:color={getNetworkColor(network, isDarkMode)}>
+        <span style:color={getNetworkColor(network, darkMode.isDarkMode)}>
           {network.name}
         </span>
       </span>

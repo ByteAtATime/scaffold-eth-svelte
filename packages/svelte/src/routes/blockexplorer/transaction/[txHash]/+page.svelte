@@ -9,6 +9,8 @@
   import { hardhat } from "viem/chains";
 
   const client = createPublicClient({ chainId: hardhat.id });
+  // This is correct usage of the $page value
+  // eslint-disable-next-line svelte/valid-compile
   const txHash = $page.params.txHash as Hash;
 
   let transaction = $state<Transaction>();

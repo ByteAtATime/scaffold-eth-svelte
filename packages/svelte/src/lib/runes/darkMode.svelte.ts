@@ -3,14 +3,12 @@ import { browser } from "$app/environment";
 
 const COLOR_SCHEME_QUERY = "(prefers-color-scheme: dark)";
 
-type CreateDarkModeOutput =
-  | {
-      isDarkMode: boolean;
-      toggle: () => void;
-      enable: () => void;
-      disable: () => void;
-    }
-  | undefined;
+type CreateDarkModeOutput = {
+  isDarkMode: boolean;
+  toggle: () => void;
+  enable: () => void;
+  disable: () => void;
+};
 
 // WHEN CHANGING THIS, REMEMBER TO CHANGE /src/app.html
 const LOCAL_STORAGE_THEME_KEY = "scaffold-eth-dark-mode";
@@ -30,7 +28,13 @@ const createMediaQuery = (query: string) => {
 };
 
 export function createDarkMode(defaultValue?: boolean): CreateDarkModeOutput {
-  if (!browser) return;
+  if (!browser)
+    return {
+      isDarkMode: true,
+      toggle: () => {},
+      enable: () => {},
+      disable: () => {},
+    };
 
   const isDarkOS = createMediaQuery(COLOR_SCHEME_QUERY);
   const prevIsDarkOs = $state({ matches: isDarkOS.matches });
