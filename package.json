@@ -27,7 +27,7 @@
     "start": "yarn workspace @se-2/svelte dev",
     "svelte:lint": "yarn workspace @se-2/svelte lint",
     "svelte:format": "yarn workspace @se-2/svelte format",
-    "svelte:check-types": "yarn workspace @se-2/svelte check-types",
+    "svelte:check": "yarn workspace @se-2/svelte check",
     "svelte:build": "yarn workspace @se-2/svelte build",
     "postinstall": "husky install",
     "precommit": "lint-staged",

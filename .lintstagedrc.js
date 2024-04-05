@@ -1,11 +1,11 @@
 const path = require("path");
 
-const buildNextEslintCommand = (filenames) =>
-  `yarn next:lint --fix --file ${filenames
-    .map((f) => path.relative(path.join("packages", "nextjs"), f))
+const builtSvelteEslintCommand = (filenames) =>
+  `yarn svelte:lint --fix --file ${filenames
+    .map((f) => path.relative(path.join("packages", "svelte"), f))
     .join(" --file ")}`;
 
-const checkTypesNextCommand = () => "yarn next:check-types";
+const checkTypesSvelteCommand = () => "yarn svelte:check";
 
 const buildHardhatEslintCommand = (filenames) =>
   `yarn hardhat:lint-staged --fix ${filenames
@@ -14,8 +14,8 @@ const buildHardhatEslintCommand = (filenames) =>
 
 module.exports = {
   "packages/nextjs/**/*.{ts,tsx}": [
-    buildNextEslintCommand,
-    checkTypesNextCommand,
+    builtSvelteEslintCommand,
+    checkTypesSvelteCommand,
   ],
   "packages/hardhat/**/*.{ts,tsx}": [buildHardhatEslintCommand],
 };
