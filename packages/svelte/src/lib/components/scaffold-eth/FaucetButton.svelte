@@ -1,5 +1,6 @@
 <script lang="ts">
   import { createTransactor } from "$lib/runes/transactor.svelte";
+  // @ts-expect-error - No idea why it doesn't find createBalance or CreateBalanceReturnType in the package
   import { createAccount, createBalance, type CreateBalanceReturnType } from "@byteatatime/wagmi-svelte";
   import { Banknotes, Icon } from "svelte-hero-icons";
   import { createWalletClient, http, parseEther } from "viem";

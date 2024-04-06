@@ -1,4 +1,7 @@
-export const createOutsideClick = (node: HTMLElement | (() => HTMLElement) | undefined, callback: () => void) => {
+export const createOutsideClick = (
+  node: HTMLElement | (() => HTMLElement | undefined) | undefined,
+  callback: () => void,
+) => {
   $effect(() => {
     const handleOutsideClick = (event: MouseEvent) => {
       if (!(event.target instanceof Element)) {

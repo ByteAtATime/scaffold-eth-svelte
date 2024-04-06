@@ -1,7 +1,7 @@
 <script lang="ts">
   import AddressComponent from "../../_components/AddressComponent.svelte";
 
-  const { data }: { contractData: { bytecode: string; assembly: string } | null; address: string } = $props();
+  const { data }: { data: { contractData: { bytecode: string; assembly: string } | null; address: string } } = $props();
 
   const { contractData, address } = $derived(data);
 </script>

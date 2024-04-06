@@ -1,5 +1,6 @@
 <script lang="ts">
   import { createTargetNetwork } from "$lib/runes/targetNetwork.svelte";
+  // @ts-expect-error - No idea why it doesn't find createBalance in the package
   import { createBlockNumber, createBalance } from "@byteatatime/wagmi-svelte";
   import { useQueryClient } from "@tanstack/svelte-query";
   import { formatEther, type Address } from "viem";
@@ -15,11 +16,17 @@
   const { targetNetwork } = $derived(createTargetNetwork());
 
   const queryClient = useQueryClient();
-  // eslint-disable-next-line svelte/valid-compile
-  const blockNumber = createBlockNumber({ watch: true, chainId: targetNetwork.id });
-  // We update this in the effect below
-  // eslint-disable-next-line svelte/valid-compile
-  let balance = $state(createBalance({ address, chainId: targetNetwork.id }));
+  const blockNumber = $derived.by(() => {
+    targetNetwork;
+
+    return untrack(() => createBlockNumber({ watch: true, chainId: targetNetwork.id }));
+  });
+
+  const balance = $derived.by(() => {
+    targetNetwork;
+
+    return untrack(() => createBalance({ address, chainId: targetNetwork.id }));
+  });
 
   $effect(() => {
     blockNumber.result.data;
@@ -28,10 +35,6 @@
     untrack(() => {
       queryClient.invalidateQueries({ queryKey: balance.result.queryKey });
     });
-  });
-
-  $effect(() => {
-    balance = createBalance({ address, chainId: targetNetwork.id });
   });
 
   const formattedBalance = $derived(balance.result.data ? Number(formatEther(balance.result.data.value)) : 0);

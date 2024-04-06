@@ -40,7 +40,7 @@
   const account = createAccount();
   const { targetNetwork } = $derived(createTargetNetwork());
   const writeDisabled = $derived(!account.result.chain || account.result.chain?.id !== targetNetwork.id);
-  let writeTxn: TransactionFunc = $state<TransactionFunc>();
+  let writeTxn = $state<TransactionFunc | undefined>();
 
   $effect(() => {
     untrack(() => {
@@ -65,7 +65,7 @@
             args: getParsedContractFunctionArgs(form),
             value: BigInt(txValue),
           });
-        await writeTxn(makeWriteWithParams);
+        await writeTxn?.(makeWriteWithParams);
         onchange();
       } catch (e: unknown) {
         console.error("⚡️ ~ file: WriteOnlyFunctionForm.tsx:handleWrite ~ error", e);
