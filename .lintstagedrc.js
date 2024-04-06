@@ -13,7 +13,7 @@ const buildHardhatEslintCommand = (filenames) =>
     .join(" ")}`;
 
 module.exports = {
-  "packages/nextjs/**/*.{ts,tsx}": [
+  "packages/svelte/**/*.{ts,tsx}": [
     builtSvelteEslintCommand,
     checkTypesSvelteCommand,
   ],
