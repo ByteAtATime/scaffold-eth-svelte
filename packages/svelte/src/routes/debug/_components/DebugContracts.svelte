@@ -3,11 +3,22 @@
   import ContractUI from "./ContractUI.svelte";
   import type { ContractName } from "$lib/utils/scaffold-eth/contract";
   import { getAllContracts } from "$lib/utils/scaffold-eth/contractsData";
+  import { untrack } from "svelte";
+
+  const selectedContractStorageKey = "scaffoldEth2.selectedContract";
 
   const contractsData = getAllContracts();
   const contractNames = Object.keys(contractsData) as ContractName[];
 
-  let selectedContract = $state(contractNames[0]); // TODO: add this to local storage
+  let selectedContract = $state(contractNames[0]);
+
+  $effect(() => {
+    selectedContract;
+
+    untrack(() => {
+      localStorage.setItem(selectedContractStorageKey, selectedContract);
+    });
+  });
 </script>
 
 <div class="flex flex-col items-center justify-center gap-y-6 py-8 lg:gap-y-8 lg:py-12">
