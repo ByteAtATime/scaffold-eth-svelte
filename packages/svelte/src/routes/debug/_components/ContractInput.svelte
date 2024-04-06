@@ -2,6 +2,8 @@
   import type { AbiParameter } from "abitype";
   import AddressInput from "$lib/components/scaffold-eth/inputs/AddressInput.svelte";
   import InputBase from "$lib/components/scaffold-eth/inputs/InputBase.svelte";
+  import IntegerInput from "$lib/components/scaffold-eth/inputs/IntegerInput.svelte";
+  import { IntegerVariant } from "$lib/components/scaffold-eth/inputs/utils";
 
   const {
     setForm,
@@ -37,5 +39,7 @@
     <AddressInput {...inputProps} />
   {:else if paramType.type === "string"}
     <InputBase {...inputProps} />
+  {:else if paramType.type.includes("int") && !paramType.type.includes("[")}
+    <IntegerInput {...inputProps} variant={paramType.type as IntegerVariant} />
   {/if}
 </div>
