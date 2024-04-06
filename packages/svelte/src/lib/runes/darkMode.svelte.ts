@@ -14,11 +14,10 @@ type CreateDarkModeOutput = {
 const LOCAL_STORAGE_THEME_KEY = "scaffold-eth-dark-mode";
 
 const createMediaQuery = (query: string) => {
-  let matches = $state(false);
-
   const mediaQuery = window.matchMedia(query);
+  let matches = $state(mediaQuery.matches);
+
   mediaQuery.addEventListener("change", v => (matches = v.matches));
-  matches = mediaQuery.matches;
 
   return {
     get matches() {
@@ -47,7 +46,19 @@ export function createDarkMode(defaultValue?: boolean): CreateDarkModeOutput {
 
     untrack(() => {
       localStorage.setItem(LOCAL_STORAGE_THEME_KEY, isDarkMode.toString());
+      window.dispatchEvent(
+        new StorageEvent("storage", {
+          key: LOCAL_STORAGE_THEME_KEY,
+          newValue: isDarkMode.toString(),
+        }),
+      );
     });
+  });
+
+  window.addEventListener("storage", (event: StorageEvent) => {
+    if (event.key === LOCAL_STORAGE_THEME_KEY) {
+      isDarkMode = event.newValue === "true";
+    }
   });
 
   // set if no init value

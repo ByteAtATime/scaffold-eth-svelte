@@ -21,10 +21,10 @@
     });
   });
 
-  const darkMode = createDarkMode();
+  const { isDarkMode } = $derived(createDarkMode());
 
   $effect(() => {
-    modal.setThemeMode(darkMode?.isDarkMode ? "dark" : "light");
+    modal.setThemeMode(isDarkMode ? "dark" : "light");
   });
 </script>
 

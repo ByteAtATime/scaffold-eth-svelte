@@ -17,8 +17,9 @@ export const getParsedError = (e: Error): string => {
       const abiItem = cause?.data?.abiItem;
       if (cause?.data && abiItem && "name" in abiItem && abiItem.name !== "Error") {
         const customErrorArgs = cause.data.args?.toString() ?? "";
-        message = `${message.replace(/reverted\.$/, "reverted with following reason:")}\n${cause.data.errorName
-          }(${customErrorArgs})`;
+        message = `${message.replace(/reverted\.$/, "reverted with following reason:")}\n${
+          cause.data.errorName
+        }(${customErrorArgs})`;
       }
     } else if (e.message) {
       message = e.message;

@@ -13,7 +13,7 @@
   const account = createAccount();
   const items = allowedNetworks.filter(network => network.id !== account.result.chain?.id);
 
-  const darkMode = createDarkMode();
+  const { isDarkMode } = $derived(createDarkMode());
 </script>
 
 {#each items as network (network.id)}
@@ -28,7 +28,7 @@
       <Icon src={ArrowsRightLeft} class="ml-2 h-6 w-4 sm:ml-0" />
       <span>
         Switch to
-        <span style:color={getNetworkColor(network, darkMode.isDarkMode)}>
+        <span style:color={getNetworkColor(network, isDarkMode)}>
           {network.name}
         </span>
       </span>
