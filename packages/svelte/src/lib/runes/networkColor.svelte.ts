@@ -1,5 +1,6 @@
 import { createTargetNetwork } from "./targetNetwork.svelte";
 import type { ChainWithAttributes } from "$lib/utils/scaffold-eth/networks";
+import { createDarkMode } from "./darkMode.svelte";
 
 export const DEFAULT_NETWORK_COLOR: [string, string] = ["#666666", "#bbbbbb"];
 
@@ -11,8 +12,7 @@ export function getNetworkColor(network: ChainWithAttributes, isDarkMode: boolea
 export const createNetworkColor = () => {
   const { targetNetwork } = $derived(createTargetNetwork());
 
-  // TODO: Implement theming
-  const isDarkMode = true;
+  const { isDarkMode } = $derived(createDarkMode());
 
   return {
     get networkColor() {
