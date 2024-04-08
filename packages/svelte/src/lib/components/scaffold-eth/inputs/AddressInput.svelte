@@ -142,4 +142,3 @@
     {/if}
   {/snippet}
 </InputBase>
-/InputBase>
