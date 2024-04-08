@@ -110,8 +110,6 @@
   );
 </script>
 
-{value}
-
 <InputBase
   bind:value={value as Address}
   {name}
