@@ -40,7 +40,14 @@
     }
   }
 
-  const { value, name, placeholder, onchange, disabled, usdMode }: CommonInputProps & { usdMode?: boolean } = $props();
+  let {
+    value = $bindable(),
+    name,
+    placeholder,
+    onchange,
+    disabled,
+    usdMode,
+  }: CommonInputProps & { usdMode?: boolean } = $props();
 
   let internalUsdMode = $state(nativeCurrencyPrice.price > 0 ? Boolean(usdMode) : false);
   let transitoryDisplayValue = $state<string | undefined>();
@@ -82,7 +89,8 @@
     }
 
     const newEthValue = displayValueToEtherValue(internalUsdMode, newValue, nativeCurrencyPrice.price);
-    onchange(newEthValue);
+    value = newEthValue;
+    onchange?.(newEthValue);
   };
 
   const toggleMode = () => {

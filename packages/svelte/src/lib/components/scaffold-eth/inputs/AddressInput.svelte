@@ -14,7 +14,7 @@
   import { untrack } from "svelte";
   import { normalize } from "viem/ens";
 
-  let { value, name, placeholder, onchange, disabled }: CommonInputProps<Address | string> = $props();
+  let { value = $bindable(), name, placeholder, onchange, disabled }: CommonInputProps<Address | string> = $props();
 
   let rawDebouncedValue: string | undefined = $state(undefined);
   let debouncedTimeout: number | undefined;
@@ -76,7 +76,8 @@
 
     enteredEnsName = debouncedValue;
     untrack(() => {
-      onchange(ensAddress!.result.data!);
+      value = ensAddress!.result.data!;
+      onchange?.(ensAddress!.result.data!);
     });
   });
 
@@ -96,7 +97,7 @@
   const handleChange = (newValue: Address) => {
     enteredEnsName = undefined;
 
-    onchange(newValue);
+    onchange?.(newValue);
   };
 
   const reFocus = $derived(
@@ -109,8 +110,10 @@
   );
 </script>
 
+{value}
+
 <InputBase
-  value={value as Address}
+  bind:value={value as Address}
   {name}
   {placeholder}
   error={ensAddress?.result.data === null}
@@ -139,3 +142,4 @@
     {/if}
   {/snippet}
 </InputBase>
+/InputBase>

@@ -38,7 +38,7 @@
   const handleChange = (e: Event) => {
     const target = e.target as HTMLInputElement;
     // eslint-disable-next-line no-undef
-    onchange(target.value as unknown as T);
+    onchange?.(target.value as unknown as T);
   };
 
   const handleFocus = (e: FocusEvent) => {

@@ -31,10 +31,10 @@
     if (!value) return;
     if (typeof value === "bigint") {
       value = value * 10n ** 18n;
-      return onchange(value);
+      return onchange?.(value);
     }
     value = BigInt(Math.round(Number(value) * 10 ** 18));
-    return onchange(value);
+    return onchange?.(value);
   };
 </script>
 
