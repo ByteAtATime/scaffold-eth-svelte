@@ -41,6 +41,7 @@
   }
 
   let {
+    // eslint-disable-next-line no-undef
     value = $bindable(),
     name,
     placeholder,

@@ -14,6 +14,7 @@
   import { untrack } from "svelte";
   import { normalize } from "viem/ens";
 
+  // eslint-disable-next-line no-undef
   let { value = $bindable(), name, placeholder, onchange, disabled }: CommonInputProps<Address | string> = $props();
 
   let rawDebouncedValue: string | undefined = $state(undefined);
