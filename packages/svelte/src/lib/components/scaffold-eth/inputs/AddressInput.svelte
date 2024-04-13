@@ -6,8 +6,16 @@
   import { blo } from "blo";
   import { normalize } from "viem/ens";
 
-  // eslint-disable-next-line no-undef
-  let { value = $bindable(), name, placeholder, onchange, disabled }: CommonInputProps<Address | string> = $props();
+  let {
+    // eslint-disable-next-line no-undef
+    value = $bindable(),
+    // eslint-disable-next-line no-undef
+    address = $bindable(),
+    name,
+    placeholder,
+    onchange,
+    disabled,
+  }: CommonInputProps<Address | string> & { address?: string | undefined; ens?: string | undefined } = $props();
 
   let rawDebouncedValue: string | undefined = $state(undefined);
   let debouncedTimeout: number | undefined;
@@ -22,6 +30,15 @@
     debouncedTimeout = window.setTimeout(() => {
       rawDebouncedValue = value as string;
     }, 500);
+  });
+
+  $effect(() => {
+    if (value && isAddress(value)) address = value;
+    else address = undefined;
+  });
+
+  $effect(() => {
+    if (address) value = address;
   });
 
   // If the user enters an address, don't delay
