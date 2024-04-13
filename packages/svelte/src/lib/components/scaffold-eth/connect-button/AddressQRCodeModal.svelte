@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Address as AddressType } from "viem";
   import QRCode from "@castlenine/svelte-qrcode";
-  import Address from "$lib/components/scaffold-eth/Address.svelte";
+  import { Address } from "$lib/components/scaffold-eth";
 
   const { address, modalId }: { address: AddressType; modalId: string } = $props();
 </script>

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Address from "$lib/components/scaffold-eth/Address.svelte";
+  import { Address } from "$lib/components/scaffold-eth";
   import { createAccount } from "@byteatatime/wagmi-svelte";
   import { BugAnt, Icon, MagnifyingGlass } from "svelte-hero-icons";
 

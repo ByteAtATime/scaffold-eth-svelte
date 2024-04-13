@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Address from "$lib/components/scaffold-eth/Address.svelte";
+  import { Address } from "$lib/components/scaffold-eth";
   import { createTargetNetwork } from "$lib/runes/targetNetwork.svelte";
   import type { TransactionWithFunction, TransactionsTableProps } from "$lib/utils/scaffold-eth/block";
   import { formatEther } from "viem";

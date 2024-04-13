@@ -1,7 +1,6 @@
 <script lang="ts">
   import BackButton from "./BackButton.svelte";
-  import Address from "$lib/components/scaffold-eth/Address.svelte";
-  import Balance from "$lib/components/scaffold-eth/Balance.svelte";
+  import { Address, Balance } from "$lib/components/scaffold-eth";
   import ContractTabs from "./ContractTabs.svelte";
 
   const { address, contractData }: { address: string; contractData: { bytecode: string; assembly: string } | null } =

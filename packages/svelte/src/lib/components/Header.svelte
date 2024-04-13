@@ -3,7 +3,7 @@
   import logo from "$lib/assets/logo.svg";
   import { Bars3, BugAnt, Icon, type IconSource } from "svelte-hero-icons";
   import ConnectButton from "$lib/components/scaffold-eth/connect-button/ConnectButton.svelte";
-  import FaucetButton from "$lib/components/scaffold-eth/FaucetButton.svelte";
+  import { FaucetButton } from "$lib/components/scaffold-eth";
   import { createOutsideClick } from "$lib/runes/outsideClick.svelte";
   import { derived } from "svelte/store";
 

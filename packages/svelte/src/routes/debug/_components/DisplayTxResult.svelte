@@ -1,7 +1,7 @@
 <script lang="ts">
   import { formatEther, isAddress, type TransactionBase, type TransactionReceipt } from "viem";
   import { replacer } from "$lib/utils/scaffold-eth/common";
-  import Address from "$lib/components/scaffold-eth/Address.svelte";
+  import { Address } from "$lib/components/scaffold-eth";
 
   type DisplayContent =
     | string

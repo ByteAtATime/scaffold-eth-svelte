@@ -1,6 +1,6 @@
 <script lang="ts">
   import { page } from "$app/stores";
-  import Address from "$lib/components/scaffold-eth/Address.svelte";
+  import { Address } from "$lib/components/scaffold-eth";
   import { createTargetNetwork } from "$lib/runes/targetNetwork.svelte";
   import { replacer } from "$lib/utils/scaffold-eth/common";
   import { decodeTransactionData, getFunctionDetails } from "$lib/utils/scaffold-eth/decodeTxData";

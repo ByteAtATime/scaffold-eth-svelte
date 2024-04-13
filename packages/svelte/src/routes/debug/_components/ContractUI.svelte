@@ -1,10 +1,9 @@
 <script lang="ts">
-  import Address from "$lib/components/scaffold-eth/Address.svelte";
+  import { Address, Balance } from "$lib/components/scaffold-eth";
   import { createDeployedContractInfo } from "$lib/runes/deployedContractInfo.svelte";
   import { createTargetNetwork } from "$lib/runes/targetNetwork.svelte";
   import type { ContractName } from "$lib/utils/scaffold-eth/contract";
   import { createNetworkColor } from "$lib/runes/networkColor.svelte";
-  import Balance from "$lib/components/scaffold-eth/Balance.svelte";
   import ContractVariables from "./ContractVariables.svelte";
   import ContractReadMethods from "./ContractReadMethods.svelte";
   import ContractWriteMethods from "./ContractWriteMethods.svelte";

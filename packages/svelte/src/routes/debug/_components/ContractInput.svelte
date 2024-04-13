@@ -1,9 +1,6 @@
 <script lang="ts">
   import type { AbiParameter } from "abitype";
-  import AddressInput from "$lib/components/scaffold-eth/inputs/AddressInput.svelte";
-  import InputBase from "$lib/components/scaffold-eth/inputs/InputBase.svelte";
-  import IntegerInput from "$lib/components/scaffold-eth/inputs/IntegerInput.svelte";
-  import { IntegerVariant } from "$lib/components/scaffold-eth/inputs/utils";
+  import { AddressInput, InputBase, IntegerInput, IntegerVariant } from "$lib/components/scaffold-eth/inputs";
 
   const {
     setForm,

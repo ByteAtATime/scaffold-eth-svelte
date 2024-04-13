@@ -15,7 +15,7 @@
   } from "./utils";
   import InheritanceTooltip from "./InheritanceTooltip.svelte";
   import ContractInput from "./ContractInput.svelte";
-  import IntegerInput from "$lib/components/scaffold-eth/inputs/IntegerInput.svelte";
+  import { IntegerInput } from "$lib/components/scaffold-eth/inputs";
   import { createTargetNetwork } from "$lib/runes/targetNetwork.svelte";
   import { createTransactor } from "$lib/runes/transactor.svelte";
 

@@ -1,6 +1,6 @@
 <script lang="ts">
-  import BlockieAvatar from "$lib/components/scaffold-eth/BlockieAvatar.svelte";
-  import { isENS } from "$lib/components/scaffold-eth/inputs/utils";
+  import { BlockieAvatar } from "$lib/components/scaffold-eth";
+  import { isENS } from "$lib/components/scaffold-eth/inputs";
   import { getAddress, type Address } from "viem";
   import {
     Icon,

@@ -3,7 +3,7 @@
   import scaffoldConfig from "$lib/scaffold.config";
   import { createAccount, createEnsName, createEnsAvatar } from "@byteatatime/wagmi-svelte";
   import WrongNetworkDropdown from "./WrongNetworkDropdown.svelte";
-  import Balance from "$lib/components/scaffold-eth/Balance.svelte";
+  import { Balance } from "$lib/components/scaffold-eth";
   import type { Address } from "viem/accounts";
   import { createNetworkColor } from "$lib/runes/networkColor.svelte";
   import AddressInfoDropdown from "./AddressInfoDropdown.svelte";
