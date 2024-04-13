@@ -7,10 +7,9 @@ import type {
 import type { ExtractAbiFunctionNames } from "abitype";
 import { createDeployedContractInfo } from "./deployedContractInfo.svelte";
 import { createTargetNetwork } from "./targetNetwork.svelte";
-import { createReadContract } from "@byteatatime/wagmi-svelte";
+import { createReadContract, type CreateReadContractReturnType } from "@byteatatime/wagmi-svelte";
 import type { QueryObserverResult, RefetchOptions } from "@tanstack/svelte-query";
 import type { ReadContractErrorType } from "viem";
-import { untrack } from "svelte";
 
 /**
  * Wrapper around wagmi's useContractRead hook which automatically loads (by name) the contract ABI and address from
@@ -30,13 +29,13 @@ export const createScaffoldReadContract = <
   value,
   ...readConfig
 }: CreateScaffoldReadConfig<TContractName, TFunctionName>) => {
-  const { data: deployedContract } = $derived(createDeployedContractInfo(contractName));
-  const { targetNetwork } = $derived(createTargetNetwork());
+  const { data: deployedContract } = $derived.by(createDeployedContractInfo(contractName));
+  const targetNetwork = $derived.by(createTargetNetwork());
 
   const argsVal = $derived(typeof args === "function" ? args() : args);
   const valueVal = $derived(typeof value === "function" ? value() : value);
 
-  let result = $state(
+  const result = $derived.by(
     createReadContract({
       chainId: targetNetwork.id,
       functionName,
@@ -47,47 +46,13 @@ export const createScaffoldReadContract = <
       value: valueVal,
       enabled: !Array.isArray(argsVal) || !argsVal.some(arg => arg === undefined),
       ...(readConfig as any),
-    }) as {
-      result: Omit<ReturnType<typeof createReadContract>["result"], "data" | "refetch"> & {
-        data: AbiFunctionReturnType<ContractAbi, TFunctionName> | undefined;
-        refetch: (
-          options?: RefetchOptions | undefined,
-        ) => Promise<QueryObserverResult<AbiFunctionReturnType<ContractAbi, TFunctionName>, ReadContractErrorType>>;
-      };
+    }) as () => Omit<ReturnType<CreateReadContractReturnType>, "data" | "refetch"> & {
+      data: AbiFunctionReturnType<ContractAbi, TFunctionName> | undefined;
+      refetch: (
+        options?: RefetchOptions | undefined,
+      ) => Promise<QueryObserverResult<AbiFunctionReturnType<ContractAbi, TFunctionName>, ReadContractErrorType>>;
     },
   );
 
-  $effect(() => {
-    deployedContract;
-    argsVal;
-
-    untrack(() => {
-      result = createReadContract({
-        chainId: targetNetwork.id,
-        functionName,
-        address: deployedContract?.address,
-        abi: deployedContract?.abi,
-        watch: true,
-        args: argsVal,
-        value: valueVal,
-        enabled: !Array.isArray(argsVal) || !argsVal.some(arg => arg === undefined),
-        ...(readConfig as any),
-      }) as {
-        result: Omit<ReturnType<typeof createReadContract>["result"], "data" | "refetch"> & {
-          data: AbiFunctionReturnType<ContractAbi, TFunctionName> | undefined;
-          refetch: (
-            options?: RefetchOptions | undefined,
-          ) => Promise<QueryObserverResult<AbiFunctionReturnType<ContractAbi, TFunctionName>, ReadContractErrorType>>;
-        };
-      };
-    });
-  });
-
-  $inspect(result);
-
-  return {
-    get result() {
-      return result.result;
-    },
-  };
+  return () => result;
 };

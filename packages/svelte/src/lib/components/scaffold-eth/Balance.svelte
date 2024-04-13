@@ -1,11 +1,11 @@
 <script lang="ts">
   import { createTargetNetwork } from "$lib/runes/targetNetwork.svelte";
-  // @ts-expect-error - No idea why it doesn't find createBalance in the package
-  import { createBlockNumber, createBalance } from "@byteatatime/wagmi-svelte";
+  import { createBlockNumber } from "@byteatatime/wagmi-svelte";
   import { useQueryClient } from "@tanstack/svelte-query";
   import { formatEther, type Address } from "viem";
   import { nativeCurrencyPrice } from "$lib/runes/global.svelte";
   import { untrack } from "svelte";
+  import { createBalance } from "@byteatatime/wagmi-svelte";
 
   const {
     address,
@@ -13,31 +13,22 @@
     usdMode = false,
   }: { address?: Address; class?: string; usdMode?: boolean } = $props();
 
-  const { targetNetwork } = $derived(createTargetNetwork());
-
+  const targetNetwork = $derived.by(createTargetNetwork());
   const queryClient = useQueryClient();
-  const blockNumber = $derived.by(() => {
-    targetNetwork;
+  const blockNumber = $derived.by(createBlockNumber(() => ({ watch: true, chainId: targetNetwork.id })));
 
-    return untrack(() => createBlockNumber({ watch: true, chainId: targetNetwork.id }));
-  });
-
-  const balance = $derived.by(() => {
-    targetNetwork;
-
-    return untrack(() => createBalance({ address, chainId: targetNetwork.id }));
-  });
+  const balance = $derived.by(createBalance(() => ({ address })));
 
   $effect(() => {
-    blockNumber.result.data;
+    blockNumber.data;
     queryClient;
 
     untrack(() => {
-      queryClient.invalidateQueries({ queryKey: balance.result.queryKey });
+      balance.refetch();
     });
   });
 
-  const formattedBalance = $derived(balance.result.data ? Number(formatEther(balance.result.data.value)) : 0);
+  const formattedBalance = $derived(balance.data ? Number(formatEther(balance.data.value)) : 0);
 
   let displayUsdMode = $state(nativeCurrencyPrice.price > 0 ? Boolean(usdMode) : false);
 
@@ -48,14 +39,14 @@
   };
 </script>
 
-{#if balance.result.isLoading}
+{#if balance.isLoading}
   <div class="flex animate-pulse space-x-4">
     <div class="h-6 w-6 rounded-md bg-slate-300"></div>
     <div class="flex items-center space-y-6">
       <div class="h-2 w-28 rounded bg-slate-300"></div>
     </div>
   </div>
-{:else if balance.result.isError}
+{:else if balance.isError}
   <div class="flex max-w-fit cursor-pointer flex-col items-center rounded-md border-2 border-gray-400 px-2">
     <div class="text-warning">Error</div>
   </div>

@@ -6,14 +6,14 @@
 
   let searchInput = $state("");
 
-  const client = createPublicClient({ chainId: hardhat.id });
+  const client = $derived.by(createPublicClient({ chainId: hardhat.id }));
 
   const handleSearch = async (event: Event) => {
     event.preventDefault();
 
     if (isHex(searchInput)) {
       try {
-        const tx = await client.result?.getTransaction({ hash: searchInput });
+        const tx = await client?.getTransaction({ hash: searchInput });
 
         if (tx) {
           goto(`/blockexplorer/transaction/${searchInput}`);

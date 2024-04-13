@@ -7,7 +7,7 @@
 
   const { blocks, transactionReceipts }: TransactionsTableProps = $props();
 
-  const { targetNetwork } = $derived(createTargetNetwork());
+  const targetNetwork = $derived.by(createTargetNetwork());
 </script>
 
 <div class="flex justify-center px-4 md:px-0">

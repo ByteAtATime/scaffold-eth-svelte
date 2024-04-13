@@ -5,7 +5,7 @@ import { fetchPriceFromUniswap } from "$lib/utils/scaffold-eth/fetchPriceFromUni
 const enablePolling = false;
 
 export const createNativeCurrencyPrice = () => {
-  const { targetNetwork } = $derived(createTargetNetwork());
+  const targetNetwork = $derived.by(createTargetNetwork());
   let nativeCurrencyPrice = $state(0);
 
   const getPrice = async () => {

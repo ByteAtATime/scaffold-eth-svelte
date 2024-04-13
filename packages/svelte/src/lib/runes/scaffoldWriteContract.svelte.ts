@@ -26,14 +26,12 @@ import type { WriteContractErrorType, WriteContractReturnType } from "@wagmi/cor
  * @param writeContractParams - wagmi's useWriteContract parameters
  */
 export const createScaffoldWriteContract = (writeContractParams?: CreateWriteContractParameters) => {
-  const {
-    result: { chain },
-  } = $derived(createAccount());
-  const writeTx = createTransactor();
-  const { targetNetwork } = $derived(createTargetNetwork());
+  const { chain } = $derived.by(createAccount());
+  const writeTx = $derived.by(createTransactor());
+  const targetNetwork = $derived.by(createTargetNetwork());
   let isMining = $state(false);
 
-  const wagmiContractWrite = createWriteContract(writeContractParams);
+  const wagmiContractWrite = $derived.by(createWriteContract(writeContractParams));
 
   const sendContractWriteTx = async <
     TContractName extends ContractName,
@@ -62,20 +60,20 @@ export const createScaffoldWriteContract = (writeContractParams?: CreateWriteCon
       isMining = true;
       const { blockConfirmations, onBlockConfirmation, ...mutateOptions } = options || {};
       const makeWriteWithParams = () =>
-        wagmiContractWrite.result.writeContractAsync(
+        wagmiContractWrite.writeContractAsync(
           {
             abi: deployedContractData.abi as Abi,
             address: deployedContractData.address,
             ...wagmiVariables,
           } as WriteContractVariables<Abi, string, any[], Config, number>,
           mutateOptions as
-          | MutateOptions<
-            WriteContractReturnType,
-            WriteContractErrorType,
-            WriteContractVariables<Abi, string, any[], Config, number>,
-            unknown
-          >
-          | undefined,
+            | MutateOptions<
+                WriteContractReturnType,
+                WriteContractErrorType,
+                WriteContractVariables<Abi, string, any[], Config, number>,
+                unknown
+              >
+            | undefined,
         );
       const writeTxResult = await writeTx(makeWriteWithParams, { blockConfirmations, onBlockConfirmation });
 

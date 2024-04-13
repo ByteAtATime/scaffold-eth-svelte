@@ -5,7 +5,7 @@
 
   const { address }: { address: Address } = $props();
 
-  const contractLogs = createContractLogs(address);
+  const contractLogs = $derived.by(createContractLogs(address));
 </script>
 
 <div class="flex flex-col gap-3 p-4">

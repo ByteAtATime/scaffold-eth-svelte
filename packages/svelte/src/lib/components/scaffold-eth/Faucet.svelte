@@ -20,14 +20,13 @@
   });
 
   let loading = $state(false);
-  let inputAddress = $state<AddressType>();
+  let inputAddress = $state<AddressType>("" as AddressType);
   let faucetAddress = $state<AddressType>();
   let sendValue = $state("");
 
-  const account = createAccount();
-  const connectedChain = $derived(account.result.chain);
+  const { chain } = $derived.by(createAccount());
 
-  const faucetTxn = createTransactor(localWalletClient);
+  const faucetTxn = $derived.by(createTransactor(() => localWalletClient));
 
   $effect(() => {
     untrack(() => {
@@ -57,7 +56,7 @@
         chain: hardhat,
       });
       loading = false;
-      inputAddress = undefined;
+      inputAddress = "" as AddressType;
       sendValue = "";
     } catch (error) {
       console.error("⚡️ ~ file: Faucet.tsx:sendETH ~ error", error);
@@ -66,7 +65,7 @@
   };
 </script>
 
-{#if connectedChain?.id === hardhat.id}
+{#if chain?.id === hardhat.id}
   <div>
     <label for="faucet-modal" class="btn btn-primary btn-sm gap-1 font-normal">
       <Icon src={Banknotes} class="h-4 w-4" />
@@ -90,11 +89,7 @@
             </div>
           </div>
           <div class="flex flex-col space-y-3">
-            <AddressInput
-              placeholder="Destination Address"
-              value={inputAddress ?? ""}
-              onchange={(value) => (inputAddress = value as AddressType)}
-            />
+            <AddressInput placeholder="Destination Address" bind:value={inputAddress} />
             <EtherInput placeholder="Amount to send" value={sendValue} onchange={value => (sendValue = value)} />
             <button class="btn btn-primary btn-sm h-10 rounded-full px-2" onclick={sendETH} disabled={loading}>
               {#if loading}

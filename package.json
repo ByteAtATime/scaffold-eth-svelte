@@ -40,6 +40,7 @@
     "lint-staged": "^13.0.3"
   },
   "dependencies": {
+    "@walletconnect/ethereum-provider": "^2.12.2",
     "viem": "^2.9.3"
   }
 }

@@ -11,19 +11,21 @@
 
   const { contractName, hidden }: { contractName: ContractName; hidden: boolean } = $props();
 
-  const deployedContract = createDeployedContractInfo(contractName);
+  const { data: deployedContractData, isLoading: deployedContractLoading } = $derived.by(
+    createDeployedContractInfo(contractName),
+  );
 
-  const { targetNetwork } = $derived(createTargetNetwork());
-  const { networkColor } = $derived(createNetworkColor());
+  const targetNetwork = $derived.by(createTargetNetwork());
+  const networkColor = $derived.by(createNetworkColor());
 
   let refreshDisplayVariables = $state(false);
 </script>
 
-{#if deployedContract.isLoading}
+{#if deployedContractLoading}
   <div class="mt-14">
     <span class="loading loading-spinner loading-lg"></span>
   </div>
-{:else if !deployedContract.data}
+{:else if !deployedContractData}
   <p class="mt-14 text-3xl">
     No contract found by the name of "{contractName}" on chain "{targetNetwork.name}"!
   </p>
@@ -37,10 +39,10 @@
           <div class="flex">
             <div class="flex flex-col gap-1">
               <span class="font-bold">{contractName}</span>
-              <Address address={deployedContract.data.address} />
+              <Address address={deployedContractData.address} />
               <div class="flex items-center gap-1">
                 <span class="text-sm font-bold">Balance:</span>
-                <Balance address={deployedContract.data.address} class="h-1.5 min-h-[0.375rem] px-0" />
+                <Balance address={deployedContractData.address} class="h-1.5 min-h-[0.375rem] px-0" />
               </div>
             </div>
           </div>
@@ -52,7 +54,7 @@
           {/if}
         </div>
         <div class="rounded-3xl bg-base-300 px-6 py-4 shadow-lg shadow-base-300 lg:px-8">
-          <ContractVariables {refreshDisplayVariables} deployedContractData={deployedContract.data} />
+          <ContractVariables {refreshDisplayVariables} {deployedContractData} />
         </div>
       </div>
       <div class="col-span-1 flex flex-col gap-6 lg:col-span-2">
@@ -68,7 +70,7 @@
               </div>
             </div>
             <div class="divide-y divide-base-300 p-5">
-              <ContractReadMethods deployedContractData={deployedContract.data} />
+              <ContractReadMethods {deployedContractData} />
             </div>
           </div>
         </div>
@@ -85,7 +87,7 @@
             </div>
             <div class="divide-y divide-base-300 p-5">
               <ContractWriteMethods
-                deployedContractData={deployedContract.data}
+                {deployedContractData}
                 onchange={() => (refreshDisplayVariables = !refreshDisplayVariables)}
               />
             </div>

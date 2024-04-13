@@ -7,7 +7,7 @@
   import Faucet from "./scaffold-eth/Faucet.svelte";
   import SwitchTheme from "./SwitchTheme.svelte";
 
-  const { targetNetwork } = $derived(createTargetNetwork());
+  const targetNetwork = $derived.by(createTargetNetwork());
   const isLocalNetwork = $derived(targetNetwork.id === hardhat.id);
 </script>
 

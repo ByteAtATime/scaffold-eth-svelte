@@ -14,10 +14,9 @@ export type TransactionFunc = (
   },
 ) => Promise<Hash | undefined>;
 
-export const createTransactor = (_walletClient?: WalletClient): TransactionFunc => {
-  let walletClient = _walletClient;
-
+export const createTransactor = (_walletClient?: () => WalletClient): (() => TransactionFunc) => {
   const result: TransactionFunc = async (tx, options) => {
+    let walletClient = _walletClient?.();
     // TODO: Why does createWalletClient not work?
     if (!walletClient) {
       const defaultWalletClient = await getWalletClient(wagmiConfig);
@@ -88,5 +87,5 @@ export const createTransactor = (_walletClient?: WalletClient): TransactionFunc 
     return transactionHash;
   };
 
-  return result;
+  return () => result;
 };

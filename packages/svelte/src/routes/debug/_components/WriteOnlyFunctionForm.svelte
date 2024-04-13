@@ -4,7 +4,6 @@
     createWaitForTransactionReceipt,
     type CreateWaitForTransactionReceiptReturnType,
     createWriteContract,
-    type CreateWriteContractReturnType,
   } from "@byteatatime/wagmi-svelte";
   import type { Abi, AbiFunction } from "abitype";
   import type { TransactionReceipt, Address } from "viem";
@@ -18,8 +17,7 @@
   import ContractInput from "./ContractInput.svelte";
   import IntegerInput from "$lib/components/scaffold-eth/inputs/IntegerInput.svelte";
   import { createTargetNetwork } from "$lib/runes/targetNetwork.svelte";
-  import { createTransactor, type TransactionFunc } from "$lib/runes/transactor.svelte";
-  import { untrack } from "svelte";
+  import { createTransactor } from "$lib/runes/transactor.svelte";
 
   const {
     abi,
@@ -37,39 +35,27 @@
 
   let form = $state(getInitialFormState(abiFunction));
   let txValue = $state<bigint | string>("");
-  const account = createAccount();
-  const { targetNetwork } = $derived(createTargetNetwork());
-  const writeDisabled = $derived(!account.result.chain || account.result.chain?.id !== targetNetwork.id);
-  let writeTxn = $state<TransactionFunc | undefined>();
+  const { chain } = $derived.by(createAccount());
+  const targetNetwork = $derived.by(createTargetNetwork());
+  const writeDisabled = $derived(!chain || chain?.id !== targetNetwork.id);
+  let writeTxn = $derived.by(createTransactor());
 
-  $effect(() => {
-    untrack(() => {
-      writeTxn = createTransactor();
-    });
-  });
-
-  let contractWrite = $state<CreateWriteContractReturnType | undefined>();
-
-  $effect(() => {
-    contractWrite = createWriteContract();
-  });
+  let contractWrite = $derived.by(createWriteContract());
 
   const handleWrite = async () => {
-    if (contractWrite?.result.writeContractAsync) {
-      try {
-        const makeWriteWithParams = () =>
-          contractWrite!.result.writeContractAsync({
-            address: contractAddress,
-            functionName: abiFunction.name,
-            abi: abi,
-            args: getParsedContractFunctionArgs(form),
-            value: BigInt(txValue),
-          });
-        await writeTxn?.(makeWriteWithParams);
-        onchange();
-      } catch (e: unknown) {
-        console.error("⚡️ ~ file: WriteOnlyFunctionForm.tsx:handleWrite ~ error", e);
-      }
+    try {
+      const makeWriteWithParams = () =>
+        contractWrite!.writeContractAsync({
+          address: contractAddress,
+          functionName: abiFunction.name,
+          abi: abi,
+          args: getParsedContractFunctionArgs(form),
+          value: BigInt(txValue),
+        });
+      await writeTxn?.(makeWriteWithParams);
+      onchange();
+    } catch (e: unknown) {
+      console.error("⚡️ ~ file: WriteOnlyFunctionForm.tsx:handleWrite ~ error", e);
     }
   };
 
@@ -77,7 +63,7 @@
   let txResult = $state<CreateWaitForTransactionReceiptReturnType | undefined>();
   $effect(() => {
     txResult = createWaitForTransactionReceipt({
-      hash: contractWrite?.result.data,
+      hash: contractWrite?.data,
     });
   });
 
@@ -135,10 +121,10 @@
       >
         <button
           class="btn btn-secondary btn-sm"
-          disabled={writeDisabled || contractWrite?.result.isPending}
+          disabled={writeDisabled || contractWrite?.isPending}
           onclick={handleWrite}
         >
-          {#if contractWrite?.result.isPending}
+          {#if contractWrite?.isPending}
             <span class="loading loading-spinner loading-xs" />
           {/if}
           Send 💸

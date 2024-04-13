@@ -7,13 +7,13 @@
 
   const { hidden = false } = $props();
 
-  const switchChain = createSwitchChain();
+  const switchChain = $derived.by(createSwitchChain());
 
   const allowedNetworks = getTargetNetworks();
-  const account = createAccount();
-  const items = allowedNetworks.filter(network => network.id !== account.result.chain?.id);
+  const { chain } = $derived.by(createAccount());
+  const items = allowedNetworks.filter(network => network.id !== chain?.id);
 
-  const { isDarkMode } = $derived(createDarkMode());
+  const { isDarkMode } = $derived.by(createDarkMode());
 </script>
 
 {#each items as network (network.id)}
@@ -22,7 +22,7 @@
       class="menu-item btn-sm flex gap-3 whitespace-nowrap !rounded-xl py-3"
       type="button"
       onclick={() => {
-        switchChain.result.switchChain?.({ chainId: network.id });
+        switchChain.switchChain?.({ chainId: network.id });
       }}
     >
       <Icon src={ArrowsRightLeft} class="ml-2 h-6 w-4 sm:ml-0" />

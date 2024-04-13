@@ -3,7 +3,7 @@
   import { ArrowLeftOnRectangle, ChevronDown, Icon } from "svelte-hero-icons";
   import NetworkOptions from "./NetworkOptions.svelte";
 
-  const disconnect = createDisconnect();
+  const disconnect = $derived.by(createDisconnect());
 </script>
 
 <div class="dropdown dropdown-end mr-2">
@@ -17,7 +17,7 @@
       <button
         class="menu-item btn-sm flex gap-3 !rounded-xl py-3 text-error"
         type="button"
-        onclick={() => disconnect.result.disconnect()}
+        onclick={() => disconnect.disconnect()}
       >
         <Icon src={ArrowLeftOnRectangle} class="ml-2 h-6 w-4 sm:ml-0" />
         <span>Disconnect</span>

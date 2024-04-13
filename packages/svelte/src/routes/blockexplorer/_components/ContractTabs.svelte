@@ -11,7 +11,7 @@
   const { address, contractData }: { address: string; contractData: { bytecode: string; assembly: string } | null } =
     $props();
 
-  const { blocks, transactionReceipts, currentPage, totalBlocks, setCurrentPage } = $derived(createFetchBlocks());
+  const { blocks, transactionReceipts, currentPage, totalBlocks, setCurrentPage } = $derived.by(createFetchBlocks());
   const publicClient = createPublicClient({
     chain: hardhat,
     transport: http(),

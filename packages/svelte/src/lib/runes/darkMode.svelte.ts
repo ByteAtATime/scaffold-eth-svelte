@@ -3,7 +3,7 @@ import { browser } from "$app/environment";
 
 const COLOR_SCHEME_QUERY = "(prefers-color-scheme: dark)";
 
-type CreateDarkModeOutput = {
+type CreateDarkModeOutput = () => {
   isDarkMode: boolean;
   toggle: () => void;
   enable: () => void;
@@ -28,12 +28,12 @@ const createMediaQuery = (query: string) => {
 
 export function createDarkMode(defaultValue?: boolean): CreateDarkModeOutput {
   if (!browser)
-    return {
+    return () => ({
       isDarkMode: true,
       toggle: () => {},
       enable: () => {},
       disable: () => {},
-    };
+    });
 
   const isDarkOS = createMediaQuery(COLOR_SCHEME_QUERY);
   const prevIsDarkOs = $state({ matches: isDarkOS.matches });
@@ -76,12 +76,10 @@ export function createDarkMode(defaultValue?: boolean): CreateDarkModeOutput {
     }
   });
 
-  return {
-    get isDarkMode() {
-      return isDarkMode;
-    },
+  return () => ({
+    isDarkMode,
     toggle: () => (isDarkMode = !isDarkMode),
     enable: () => (isDarkMode = true),
     disable: () => (isDarkMode = false),
-  };
+  });
 }

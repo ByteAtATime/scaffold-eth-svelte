@@ -2,16 +2,8 @@
   import { isAddress, type Address } from "viem";
   import { isENS, type CommonInputProps } from "./utils";
   import InputBase from "./InputBase.svelte";
-  import {
-    createEnsAddress,
-    type CreateEnsNameReturnType,
-    type CreateEnsAddressReturnType,
-    createEnsName,
-    type CreateEnsAvatarReturnType,
-    createEnsAvatar,
-  } from "@byteatatime/wagmi-svelte";
+  import { createEnsAddress, createEnsName, createEnsAvatar } from "@byteatatime/wagmi-svelte";
   import { blo } from "blo";
-  import { untrack } from "svelte";
   import { normalize } from "viem/ens";
 
   // eslint-disable-next-line no-undef
@@ -40,60 +32,57 @@
 
   let enteredEnsName = $state<string>();
 
-  let ensAddress = $state<CreateEnsAddressReturnType | undefined>();
-  let isEnsAddressLoading = $derived(ensAddress?.result.isLoading);
-  let isEnsAddressError = $derived(ensAddress?.result.isError);
-  let isEnsAddressSuccess = $derived(ensAddress?.result.isSuccess);
-
-  let ensName = $state<CreateEnsNameReturnType | undefined>();
-  let isEnsNameLoading = $derived(ensName?.result.isLoading);
-  let isEnsNameError = $derived(ensName?.result.isError);
-  let isEnsNameSuccess = $derived(ensName?.result.isSuccess);
-
-  $effect(() => {
-    ensAddress = createEnsAddress({
+  const {
+    isLoading: isEnsAddressLoading,
+    isError: isEnsAddressError,
+    isSuccess: isEnsAddressSuccess,
+    data: ensAddress,
+  } = $derived.by(
+    createEnsAddress(() => ({
       name: settledValue,
       chainId: 1,
       query: {
         gcTime: 30_000,
         enabled: isDebouncedValueLive && isENS(debouncedValue),
       },
-    });
-  });
+    })),
+  );
 
-  $effect(() => {
-    ensName = createEnsName({
+  let {
+    isLoading: isEnsNameLoading,
+    isError: isEnsNameError,
+    isSuccess: isEnsNameSuccess,
+    data: ensName,
+  } = $derived.by(
+    createEnsName(() => ({
       address: settledValue,
       chainId: 1,
       query: {
         gcTime: 30_000,
         enabled: debouncedValue && isAddress(debouncedValue),
       },
-    });
-  });
+    })),
+  );
 
   $effect(() => {
-    if (!ensAddress?.result.data) return;
+    if (!ensAddress) return;
 
     enteredEnsName = debouncedValue;
-    untrack(() => {
-      value = ensAddress!.result.data!;
-      onchange?.(ensAddress!.result.data!);
-    });
+
+    value = ensAddress;
+    onchange?.(ensAddress);
   });
 
-  let ensAvatar = $state<CreateEnsAvatarReturnType | undefined>();
-
-  $effect(() => {
-    ensAvatar = createEnsAvatar({
-      name: ensName?.result.data ? normalize(ensName.result.data) : undefined,
+  const ensAvatar = $derived.by(
+    createEnsAvatar(() => ({
+      name: ensName ? normalize(ensName) : undefined,
       chainId: 1,
       query: {
         enabled: Boolean(ensName),
         gcTime: 30_000,
       },
-    });
-  });
+    })),
+  );
 
   const handleChange = (newValue: Address) => {
     enteredEnsName = undefined;
@@ -106,8 +95,8 @@
       isEnsNameError ||
       isEnsNameSuccess ||
       isEnsAddressSuccess ||
-      ensName?.result.data === null ||
-      ensAddress?.result.data === null,
+      ensName === null ||
+      ensAddress === null,
   );
 </script>
 
@@ -115,23 +104,23 @@
   bind:value={value as Address}
   {name}
   {placeholder}
-  error={ensAddress?.result.data === null}
+  error={ensAddress === null}
   onchange={handleChange}
   disabled={isEnsAddressLoading || isEnsNameLoading || disabled}
   {reFocus}
 >
   {#snippet prefix()}
-    {#if ensName?.result.data}
+    {#if ensName}
       <div class="flex items-center rounded-l-full bg-base-300">
-        {#if ensAvatar?.result.isLoading}
+        {#if ensAvatar?.isLoading}
           <div class="skeleton h-[35px] w-[35px] shrink-0 rounded-full bg-base-200" />
         {/if}
-        {#if ensAvatar?.result.data}
+        {#if ensAvatar?.data}
           <span class="w-[35px]">
-            <img class="w-full rounded-full" src={ensAvatar?.result.data} alt="{ensAddress?.result.data} avatar" />
+            <img class="w-full rounded-full" src={ensAvatar?.data} alt="{ensAddress} avatar" />
           </span>
         {/if}
-        <span class="px-2 text-accent">{enteredEnsName ?? ensName.result.data}</span>
+        <span class="px-2 text-accent">{enteredEnsName ?? ensName}</span>
       </div>
     {/if}
   {/snippet}

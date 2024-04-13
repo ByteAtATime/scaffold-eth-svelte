@@ -10,7 +10,7 @@
     transformAbiFunction,
   } from "./utils";
   import ContractInput from "./ContractInput.svelte";
-  import { createReadContract, type CreateReadContractReturnType } from "@byteatatime/wagmi-svelte";
+  import { createReadContract } from "@byteatatime/wagmi-svelte";
   import { createTargetNetwork } from "$lib/runes/targetNetwork.svelte";
 
   const {
@@ -25,15 +25,13 @@
     abi: Abi;
   } = $props();
 
-  const { targetNetwork } = $derived(createTargetNetwork());
+  const targetNetwork = $derived.by(createTargetNetwork());
 
   let form = $state<Record<string, any>>(getInitialFormState(abiFunction));
   let result = $state<unknown>();
 
-  let readContract = $state<CreateReadContractReturnType | undefined>();
-
-  $effect(() => {
-    readContract = createReadContract({
+  let readContract = $derived.by(
+    createReadContract(() => ({
       address: contractAddress,
       functionName: abiFunction.name,
       abi: abi,
@@ -43,8 +41,8 @@
         enabled: false,
         retry: false,
       },
-    });
-  });
+    })),
+  );
 
   const transformedFunction = $derived(transformAbiFunction(abiFunction));
 </script>
@@ -77,12 +75,12 @@
     <button
       class="btn btn-secondary btn-sm"
       onclick={async () => {
-				const { data } = await readContract!.result.refetch();
+				const { data } = await readContract!.refetch();
 				result = data;
 			}}
-      disabled={readContract?.result.isFetching}
+      disabled={readContract?.isFetching}
     >
-      {#if readContract?.result.isFetching}
+      {#if readContract?.isFetching}
         <span class="loading loading-spinner loading-xs"></span>
       {/if}
       Read 📡

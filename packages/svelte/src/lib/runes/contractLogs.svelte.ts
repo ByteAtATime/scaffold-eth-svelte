@@ -3,13 +3,13 @@ import type { Address, Log } from "viem";
 
 export const createContractLogs = (address: Address) => {
   let logs = $state<Log[]>([]);
-  const client = createPublicClient();
+  const client = $derived.by(createPublicClient());
 
   $effect(() => {
     const fetchLogs = async () => {
       if (!client) return console.error("Client not found");
       try {
-        const existingLogs = await client.result?.getLogs({
+        const existingLogs = await client.getLogs({
           address: address,
           fromBlock: 0n,
           toBlock: "latest",
@@ -21,9 +21,9 @@ export const createContractLogs = (address: Address) => {
     };
     fetchLogs();
 
-    return client?.result?.watchBlockNumber({
+    return client?.watchBlockNumber({
       onBlockNumber: async (_blockNumber, prevBlockNumber) => {
-        const newLogs = await client.result?.getLogs({
+        const newLogs = await client.getLogs({
           address: address,
           fromBlock: prevBlockNumber,
           toBlock: "latest",
@@ -33,5 +33,5 @@ export const createContractLogs = (address: Address) => {
     });
   });
 
-  return logs;
+  return () => logs;
 };

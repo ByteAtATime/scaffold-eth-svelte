@@ -4,12 +4,11 @@
   import SearchBar from "./_components/SearchBar.svelte";
   import TransactionsTable from "./_components/TransactionsTable.svelte";
 
-  const fetchBlocks = createFetchBlocks();
-  const { blocks, transactionReceipts, currentPage, totalBlocks } = $derived(fetchBlocks);
+  const { blocks, transactionReceipts, currentPage, totalBlocks, setCurrentPage } = $derived.by(createFetchBlocks());
 </script>
 
 <div class="container mx-auto my-10">
   <SearchBar />
   <TransactionsTable {blocks} {transactionReceipts} />
-  <PaginationButton {currentPage} totalItems={Number(totalBlocks)} setCurrentPage={fetchBlocks.setCurrentPage} />
+  <PaginationButton {currentPage} totalItems={Number(totalBlocks)} {setCurrentPage} />
 </div>

@@ -8,7 +8,7 @@
   import { type Transaction, type TransactionReceipt, type Hash, formatEther, formatUnits } from "viem";
   import { hardhat } from "viem/chains";
 
-  const client = createPublicClient({ chainId: hardhat.id });
+  const client = $derived.by(createPublicClient({ chainId: hardhat.id }));
   // This is correct usage of the $page value
   // eslint-disable-next-line svelte/valid-compile
   const txHash = $page.params.txHash as Hash;
@@ -17,13 +17,13 @@
   let receipt = $state<TransactionReceipt>();
   let functionCalled = $state<string>();
 
-  const { targetNetwork } = $derived(createTargetNetwork());
+  const targetNetwork = $derived.by(createTargetNetwork());
 
   $effect(() => {
-    if (txHash && client.result) {
+    if (txHash && client) {
       const fetchTransaction = async () => {
-        const tx = await client.result!.getTransaction({ hash: txHash });
-        const txReceipt = await client.result!.getTransactionReceipt({ hash: txHash });
+        const tx = await client.getTransaction({ hash: txHash });
+        const txReceipt = await client.getTransactionReceipt({ hash: txHash });
 
         const transactionWithDecodedData = decodeTransactionData(tx);
         transaction = transactionWithDecodedData;

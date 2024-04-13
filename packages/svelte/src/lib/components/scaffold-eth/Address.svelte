@@ -6,7 +6,6 @@
   import { getBlockExplorerAddressLink } from "$lib/utils/scaffold-eth/networks";
   import BlockieAvatar from "./BlockieAvatar.svelte";
   import { CheckCircle, DocumentDuplicate, Icon } from "svelte-hero-icons";
-  import { untrack } from "svelte";
 
   const {
     address,
@@ -20,6 +19,8 @@
     size?: "xs" | "sm" | "base" | "lg" | "xl" | "2xl" | "3xl";
   } = $props();
 
+  const checkSumAddress = $derived(address ? getAddress(address) : undefined);
+
   const blockieSizeMap = {
     xs: 6,
     sm: 7,
@@ -30,32 +31,25 @@
     "3xl": 15,
   };
 
-  let ens: string | null = $state(null);
-  let ensAvatar: string | null = $state(null);
-  let addressCopied = $state(false);
-  const checkSumAddress = $derived(address ? getAddress(address) : undefined);
-
-  $effect(() => {
-    const fetchedEnsName = createEnsName({
+  let { data: ens } = $derived.by(
+    createEnsName(() => ({
       address: checkSumAddress,
       query: {
         enabled: isAddress(checkSumAddress ?? ""),
       },
       chainId: 1,
-    });
-    const fetchedEnsAvatar = createEnsAvatar({
-      name: untrack(() => fetchedEnsName.result.data ?? undefined),
+    })),
+  );
+  let { data: ensAvatar } = $derived.by(
+    createEnsAvatar(() => ({
+      name: ens ?? undefined,
       query: {
-        enabled: untrack(() => Boolean(fetchedEnsName.result.data ?? false)),
+        enabled: Boolean(ens),
       },
       chainId: 1,
-    });
-
-    untrack(() => {
-      ens = fetchedEnsName.result.data ?? null;
-      ensAvatar = fetchedEnsAvatar.result.data ?? null;
-    });
-  });
+    })),
+  );
+  let addressCopied = $state(false);
 
   let displayAddress = $derived.by(() => {
     if (ens) {
@@ -66,7 +60,7 @@
     return checkSumAddress?.slice(0, 6) + "..." + checkSumAddress?.slice(-4);
   });
 
-  const { targetNetwork } = $derived(createTargetNetwork());
+  const targetNetwork = $derived.by(createTargetNetwork());
 
   let blockExplorerAddressLink = $state<string>();
   $effect(() => {

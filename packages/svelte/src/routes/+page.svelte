@@ -3,7 +3,7 @@
   import { createAccount } from "@byteatatime/wagmi-svelte";
   import { BugAnt, Icon, MagnifyingGlass } from "svelte-hero-icons";
 
-  const account = createAccount();
+  const { address } = $derived.by(createAccount());
 </script>
 
 <div class="flex flex-grow flex-col items-center pt-10">
@@ -14,7 +14,7 @@
     </h1>
     <div class="flex items-center justify-center space-x-2">
       <p class="my-2 font-medium">Connected Address:</p>
-      <Address address={account.result.address} />
+      <Address {address} />
     </div>
     <p class="text-center text-lg">
       Get started by editing

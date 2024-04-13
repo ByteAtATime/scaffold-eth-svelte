@@ -10,13 +10,9 @@ export function getNetworkColor(network: ChainWithAttributes, isDarkMode: boolea
 }
 
 export const createNetworkColor = () => {
-  const { targetNetwork } = $derived(createTargetNetwork());
+  const targetNetwork = $derived.by(createTargetNetwork());
 
-  const { isDarkMode } = $derived(createDarkMode());
+  const { isDarkMode } = $derived.by(createDarkMode());
 
-  return {
-    get networkColor() {
-      return getNetworkColor(targetNetwork, isDarkMode);
-    },
-  };
+  return () => getNetworkColor(targetNetwork, isDarkMode);
 };

@@ -4,7 +4,7 @@
 
   const { class: className } = $props();
 
-  const { isDarkMode, toggle } = $derived(createDarkMode());
+  const { isDarkMode, toggle } = $derived.by(createDarkMode());
 
   $effect(() => {
     document.body.setAttribute("data-theme", isDarkMode ? "dark" : "light");

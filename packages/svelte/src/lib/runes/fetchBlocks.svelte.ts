@@ -133,24 +133,14 @@ export const createFetchBlocks = () => {
     return testClient.watchBlocks({ onBlock: handleNewBlock, includeTransactions: true });
   });
 
-  return {
-    get blocks() {
-      return blocks;
-    },
-    get transactionReceipts() {
-      return transactionReceipts;
-    },
-    get currentPage() {
-      return currentPage;
-    },
+  return () => ({
+    blocks,
+    transactionReceipts,
+    currentPage,
+    totalBlocks,
+    error,
     setCurrentPage(newCurrentPage: number) {
       currentPage = newCurrentPage;
     },
-    get totalBlocks() {
-      return totalBlocks;
-    },
-    get error() {
-      return error;
-    },
-  };
+  });
 };

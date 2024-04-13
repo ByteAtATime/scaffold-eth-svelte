@@ -13,9 +13,5 @@ export const createAnimationConfig = (data: () => unknown) => {
     prevData = newData;
   });
 
-  return {
-    get showAnimation() {
-      return showAnimation;
-    },
-  };
+  return () => showAnimation;
 };

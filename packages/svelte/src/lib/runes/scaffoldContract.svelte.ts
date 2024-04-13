@@ -30,11 +30,11 @@ export const createScaffoldContract = <
   contractName: TContractName;
   walletClient?: TWalletClient | null;
 }) => {
-  const { data: deployedContractData, isLoading: deployedContractLoading } = $derived(
+  const { data: deployedContractData, isLoading: deployedContractLoading } = $derived.by(
     createDeployedContractInfo(contractName),
   );
-  const { targetNetwork } = $derived(createTargetNetwork());
-  const { result: publicClient } = $derived(createPublicClient({ chainId: targetNetwork.id }));
+  const targetNetwork = $derived.by(createTargetNetwork());
+  const publicClient = $derived.by(createPublicClient({ chainId: targetNetwork.id }));
 
   let contract = $state<GetContractReturnType | undefined>(undefined);
   $effect(() => {

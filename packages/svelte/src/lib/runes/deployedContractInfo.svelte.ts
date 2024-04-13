@@ -7,7 +7,7 @@ export const createDeployedContractInfo = <TContractName extends ContractName>(c
     contracts?.[targetNetwork.targetNetwork.id]?.[contractName as ContractName] as Contract<TContractName>,
   );
   let status = $state(ContractCodeStatus.LOADING);
-  const publicClient = createPublicClient({ chainId: targetNetwork.targetNetwork.id });
+  const publicClient = $derived.by(createPublicClient({ chainId: targetNetwork.targetNetwork.id }));
 
   $effect(() => {
     const checkContractDeployment = async () => {
@@ -15,11 +15,11 @@ export const createDeployedContractInfo = <TContractName extends ContractName>(c
         status = ContractCodeStatus.NOT_FOUND;
         return;
       }
-      const code = await publicClient.result?.getBytecode({
+      const code = await publicClient?.getBytecode({
         address: deployedContract.address,
       });
 
-      if (code === "0x") {
+      if (!code || code === "0x") {
         status = ContractCodeStatus.NOT_FOUND;
         return;
       }
@@ -29,12 +29,8 @@ export const createDeployedContractInfo = <TContractName extends ContractName>(c
     checkContractDeployment();
   });
 
-  return {
-    get data() {
-      return status === ContractCodeStatus.DEPLOYED ? deployedContract : undefined;
-    },
-    get isLoading() {
-      return status === ContractCodeStatus.LOADING;
-    },
-  };
+  return () => ({
+    data: status === ContractCodeStatus.DEPLOYED ? deployedContract : undefined,
+    isLoading: status === ContractCodeStatus.LOADING,
+  });
 };
