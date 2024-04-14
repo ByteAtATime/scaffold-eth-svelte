@@ -12,11 +12,13 @@
     // eslint-disable-next-line no-undef
     token: currentToken = $bindable(),
     suggestedTokens: suggestedTokenAddresses,
+    onchange,
     button,
   }: {
     chainId?: number | undefined;
     token?: Token | undefined;
     suggestedTokens?: Address[] | undefined;
+    onchange?: (token: Token) => void | undefined;
     button?: Snippet<[Token | undefined]> | undefined;
   } = $props();
 
@@ -66,6 +68,7 @@
   const chooseToken = (chosenToken: Token) => {
     currentToken = chosenToken;
     modalIsOpened = false;
+    onchange?.(chosenToken);
   };
 </script>
 
