@@ -71,7 +71,7 @@
     <div class="dropdown lg:hidden" bind:this={burgerMenu}>
       <button
         tabIndex={0}
-        class={`btn btn-ghost ml-1 ${isDrawerOpen ? "hover:bg-secondary" : "hover:bg-transparent"}`}
+        class="btn btn-ghost ml-1 {isDrawerOpen ? 'hover:bg-secondary' : 'hover:bg-transparent'}"
         onclick={() => {
           isDrawerOpen = !isDrawerOpen;
         }}

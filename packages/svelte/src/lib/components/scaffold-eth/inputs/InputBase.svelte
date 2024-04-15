@@ -53,7 +53,7 @@
   });
 </script>
 
-<div class={`flex rounded-full border-2 border-base-300 bg-base-200 text-accent ${modifier}`}>
+<div class="flex rounded-full border-2 border-base-300 bg-base-200 text-accent {modifier}">
   {#if prefix}
     {@render prefix()}
   {/if}

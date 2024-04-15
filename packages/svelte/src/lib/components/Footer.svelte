@@ -31,7 +31,7 @@
           </a>
         {/if}
       </div>
-      <SwitchTheme class={`pointer-events-auto ${isLocalNetwork ? "self-end md:self-auto" : ""}`} />
+      <SwitchTheme class="pointer-events-auto {isLocalNetwork && 'self-end md:self-auto'}" />
     </div>
   </div>
   <div class="w-full">

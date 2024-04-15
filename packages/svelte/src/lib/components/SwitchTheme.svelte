@@ -2,7 +2,7 @@
   import { createDarkMode } from "$lib/runes/darkMode.svelte";
   import { Icon, Moon, Sun } from "svelte-hero-icons";
 
-  const { class: className } = $props();
+  const { class: className }: { class?: string | undefined } = $props();
 
   const { isDarkMode, toggle } = $derived.by(createDarkMode());
 
@@ -11,7 +11,7 @@
   });
 </script>
 
-<div class={`flex space-x-2 text-sm ${className}`}>
+<div class="flex space-x-2 text-sm {className}">
   <input
     id="theme-toggle"
     type="checkbox"

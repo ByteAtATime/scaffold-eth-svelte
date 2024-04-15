@@ -89,14 +89,14 @@
       />
     </div>
     {#if disableAddressLink}
-      <span class={`ml-1.5 text-${size} font-normal`}>{displayAddress}</span>
+      <span class="ml-1.5 text-{size} font-normal">{displayAddress}</span>
     {:else if targetNetwork.id === hardhat.id}
-      <span class={`ml-1.5 text-${size} font-normal`}>
+      <span class="ml-1.5 text-{size} font-normal">
         <a href={blockExplorerAddressLink}>{displayAddress}</a>
       </span>
     {:else}
       <a
-        class={`ml-1.5 text-${size} font-normal`}
+        class="ml-1.5 text-{size} font-normal"
         target="_blank"
         href={blockExplorerAddressLink}
         rel="noopener noreferrer"

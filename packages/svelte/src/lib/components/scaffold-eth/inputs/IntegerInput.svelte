@@ -46,7 +46,7 @@
         data-tip="Multiply by 10^18 (wei)"
       >
         <button
-          class={`${disabled ? "cursor-not-allowed" : "cursor-pointer"} px-4 font-semibold text-accent`}
+          class="{disabled ? 'cursor-not-allowed' : 'cursor-pointer'} px-4 font-semibold text-accent"
           onclick={multiplyBy1e18}
           {disabled}
         >

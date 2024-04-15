@@ -23,12 +23,9 @@
 </script>
 
 <div
-  class={`relative flex max-w-sm transform-gpu flex-row items-start justify-between space-x-2 rounded-xl bg-base-200 p-4 shadow-center shadow-accent transition-all duration-500 ease-in-out
-  ${
-		position!.substring(0, 3) == 'top'
+  class="relative flex max-w-sm transform-gpu flex-row items-start justify-between space-x-2 rounded-xl bg-base-200 p-4 shadow-center shadow-accent transition-all duration-500 ease-in-out {position!.substring(0, 3) == 'top'
 			? `hover:translate-y-1 ${visible ? 'top-0' : '-top-96'}`
-			: `hover:-translate-y-1 ${visible ? 'bottom-0' : '-bottom-96'}`
-	}`}
+			: `hover:-translate-y-1 ${visible ? 'bottom-0' : '-bottom-96'}`}"
 >
   <div class="self-center leading-[0]">
     {#if icon}
@@ -45,7 +42,7 @@
       <Icon src={ExclamationTriangle} class="w-7 text-warning" />
     {/if}
   </div>
-  <div class={`overflow-x-hidden whitespace-pre-line break-words ${icon ? "mt-1" : ""}`}>
+  <div class="overflow-x-hidden whitespace-pre-line break-words" class:mt-1={icon}>
     {#if typeof content === "string"}
       {content}
     {:else}
@@ -53,7 +50,7 @@
     {/if}
   </div>
 
-  <button class={`cursor-pointer text-lg ${icon ? "mt-1" : ""}`} onclick={() => toast_.dismiss(id)}>
+  <button class="cursor-pointer text-lg" class:mt-1={icon} onclick={() => toast_.dismiss(id)}>
     <Icon src={XMark} class="w-6 cursor-pointer" onclick={() => toast_.remove(id)} />
   </button>
 </div>

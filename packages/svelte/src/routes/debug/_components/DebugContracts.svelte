@@ -29,11 +29,9 @@
       <div class="flex w-full max-w-7xl flex-row flex-wrap gap-2 px-6 pb-1 lg:px-10">
         {#each contractNames as contractName}
           <button
-            class={`btn btn-secondary btn-sm font-light hover:border-transparent ${
-              contractName === selectedContract
-                ? "no-animation bg-base-300 hover:bg-base-300"
-                : "bg-base-100 hover:bg-secondary"
-            }`}
+            class="btn btn-secondary btn-sm font-light hover:border-transparent {contractName === selectedContract
+              ? 'no-animation bg-base-300 hover:bg-base-300'
+              : 'bg-base-100 hover:bg-secondary'}"
             onclick={() => (selectedContract = contractName)}
           >
             {contractName}

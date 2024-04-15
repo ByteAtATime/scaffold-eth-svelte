@@ -72,7 +72,7 @@
 </script>
 
 <div class="space-y-3 py-5 first:pt-0 last:pb-1">
-  <div class={`flex gap-3 ${zeroInputs ? "flex-row items-center justify-between" : "flex-col"}`}>
+  <div class="flex gap-3 {zeroInputs ? 'flex-row items-center justify-between' : 'flex-col'}">
     <p class="my-0 break-words font-medium">
       {abiFunction.name}
       <InheritanceTooltip {inheritedFrom} />
@@ -113,10 +113,8 @@
         </div>
       {/if}
       <div
-        class={`flex ${
-          writeDisabled &&
-          "tooltip before:left-auto before:right-[-10px] before:transform-none before:content-[attr(data-tip)]"
-        }`}
+        class="flex {writeDisabled &&
+          'tooltip before:left-auto before:right-[-10px] before:transform-none before:content-[attr(data-tip)]'}"
         data-tip={`${writeDisabled && "Wallet not connected or in the wrong network"}`}
       >
         <button

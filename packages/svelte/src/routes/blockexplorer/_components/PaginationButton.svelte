@@ -19,7 +19,7 @@
 {#if !isNextButtonDisabled && !isPrevButtonDisabled}
   <div class="mx-5 mt-5 flex justify-end gap-3">
     <button
-      class={`btn btn-sm ${prevButtonClass}`}
+      class="btn btn-sm {prevButtonClass}"
       disabled={isPrevButtonDisabled}
       onClick={() => setCurrentPage(currentPage - 1)}
     >
@@ -27,7 +27,7 @@
     </button>
     <span class="self-center font-medium text-primary-content">Page {currentPage + 1}</span>
     <button
-      class={`btn btn-sm ${nextButtonClass}`}
+      class="btn btn-sm {nextButtonClass}"
       disabled={isNextButtonDisabled}
       onClick={() => setCurrentPage(currentPage + 1)}
     >

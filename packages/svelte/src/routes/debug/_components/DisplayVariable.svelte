@@ -63,9 +63,9 @@
   <div class="flex flex-col items-start font-medium text-gray-500">
     <div>
       <div
-        class={`block break-all bg-transparent transition ${
-          showAnimation ? "animate-pulse-fast rounded-sm bg-warning" : ""
-        }`}
+        class="block break-all bg-transparent transition {showAnimation
+          ? 'animate-pulse-fast rounded-sm bg-warning'
+          : ''}"
       >
         <DisplayTxResult content={contractRead?.data} />
       </div>

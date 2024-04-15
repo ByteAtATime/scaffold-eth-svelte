@@ -2,7 +2,7 @@
   const { message, blockExplorerLink }: { message: string; blockExplorerLink?: string } = $props();
 </script>
 
-<div class={`ml-1 flex cursor-default flex-col`}>
+<div class="ml-1 flex cursor-default flex-col">
   <p class="my-0">{message}</p>
 
   {#if blockExplorerLink && blockExplorerLink.length > 0}
