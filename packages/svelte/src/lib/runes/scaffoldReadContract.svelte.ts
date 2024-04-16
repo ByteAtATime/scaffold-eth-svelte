@@ -22,18 +22,14 @@ import type { ReadContractErrorType } from "viem";
 export const createScaffoldReadContract = <
   TContractName extends ContractName,
   TFunctionName extends ExtractAbiFunctionNames<ContractAbi<TContractName>, "pure" | "view">,
->({
-  contractName,
-  functionName,
-  args,
-  value,
-  ...readConfig
-}: CreateScaffoldReadConfig<TContractName, TFunctionName>) => {
+>(
+  config: CreateScaffoldReadConfig<TContractName, TFunctionName>,
+) => {
+  const { contractName, functionName, args, value, ...readConfig } = $derived(
+    config instanceof Function ? config() : config,
+  );
   const { data: deployedContract } = $derived.by(createDeployedContractInfo(contractName));
   const targetNetwork = $derived.by(createTargetNetwork());
-
-  const argsVal = $derived(typeof args === "function" ? args() : args);
-  const valueVal = $derived(typeof value === "function" ? value() : value);
 
   const result = $derived.by(
     createReadContract({
@@ -42,9 +38,9 @@ export const createScaffoldReadContract = <
       address: deployedContract?.address,
       abi: deployedContract?.abi,
       watch: true,
-      args: argsVal,
-      value: valueVal,
-      enabled: !Array.isArray(argsVal) || !argsVal.some(arg => arg === undefined),
+      args: args,
+      value: value,
+      enabled: !Array.isArray(args) || !args.some(arg => arg === undefined),
       ...(readConfig as any),
     }) as () => Omit<ReturnType<CreateReadContractReturnType>, "data" | "refetch"> & {
       data: AbiFunctionReturnType<ContractAbi, TFunctionName> | undefined;
