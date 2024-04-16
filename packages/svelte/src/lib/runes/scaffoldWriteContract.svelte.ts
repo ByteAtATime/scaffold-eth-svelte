@@ -83,10 +83,11 @@ export const createScaffoldWriteContract = <TContractName extends ContractName>(
       isMining = false;
     }
   };
-  return {
+
+  return () => ({
     ...wagmiContractWrite,
     isMining,
     // Overwrite wagmi's write async
     writeContractAsync: sendContractWriteTx,
-  };
+  });
 };
