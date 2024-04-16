@@ -43,7 +43,7 @@
     }
 
     if (Array.isArray(content)) {
-      const mostReadable = (v: DisplayContent) => (["number", "boolean"].includes(typeof v) ? v : display(true));
+      const mostReadable = (v: DisplayContent) => (["number", "boolean"].includes(typeof v) ? v : display(v, true));
       const displayable = JSON.stringify(content.map(mostReadable), replacer);
 
       return displayAsText ? displayable : { type: "span", content: displayable.replaceAll(",", ",\n") };
