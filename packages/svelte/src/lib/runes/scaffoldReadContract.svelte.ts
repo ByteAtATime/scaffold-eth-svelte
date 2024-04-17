@@ -32,25 +32,22 @@ export const createScaffoldReadContract = <
   const targetNetwork = $derived.by(createTargetNetwork());
 
   const result = $derived.by(
-    createReadContract(
-      () =>
-        ({
-          chainId: targetNetwork.id,
-          functionName,
-          address: deployedContract?.address,
-          abi: deployedContract?.abi,
-          watch: true,
-          args: args,
-          value: value,
-          enabled: !Array.isArray(args) || !args.some(arg => arg === undefined),
-          ...(readConfig as any),
-        }) as () => Omit<ReturnType<CreateReadContractReturnType>, "data" | "refetch"> & {
-          data: AbiFunctionReturnType<ContractAbi, TFunctionName> | undefined;
-          refetch: (
-            options?: RefetchOptions | undefined,
-          ) => Promise<QueryObserverResult<AbiFunctionReturnType<ContractAbi, TFunctionName>, ReadContractErrorType>>;
-        },
-    ),
+    createReadContract(() => ({
+      chainId: targetNetwork.id,
+      functionName,
+      address: deployedContract?.address,
+      abi: deployedContract?.abi,
+      watch: true,
+      args: args,
+      value: value,
+      enabled: !Array.isArray(args) || !args.some(arg => arg === undefined),
+      ...(readConfig as any),
+    })) as () => Omit<ReturnType<CreateReadContractReturnType>, "data" | "refetch"> & {
+      data: AbiFunctionReturnType<ContractAbi, TFunctionName> | undefined;
+      refetch: (
+        options?: RefetchOptions | undefined,
+      ) => Promise<QueryObserverResult<AbiFunctionReturnType<ContractAbi, TFunctionName>, ReadContractErrorType>>;
+    },
   );
 
   return () => result;

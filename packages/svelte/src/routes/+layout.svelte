@@ -5,9 +5,9 @@
   import { wagmiConfig } from "$lib/wagmi";
   import { Toaster } from "@leodog896/svelte-french-toast";
 
-  const { data }: { data: { vercelUrl?: string; port?: number } } = $props();
+  const { data }: { data: { vercelUrl?: string } } = $props();
 
-  const baseUrl = $derived(data.vercelUrl ? `https://${data.vercelUrl}` : `http://localhost:${data.port || 5173}`);
+  const baseUrl = $derived(data.vercelUrl ? `https://${data.vercelUrl}` : `http://localhost:5173`);
 
   const metadata = $derived({
     title: "Scaffold-ETH 2 App",
